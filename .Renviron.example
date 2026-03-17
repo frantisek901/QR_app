@@ -1,0 +1,6 @@
+APP_SALT="zde_zadej_svuj_tajny_salt"
+MY_EMAIL="tvuj.email@univerzita.cz"
+SMTP_USER="tvuj_login"
+SMTP_PASS="tvoje_heslo"
+SMTP_HOST="smtp.univerzita.cz"
+SMTP_PORT=465
