@@ -1,8 +1,8 @@
+.git
+.gitignore
 .Renviron
 *.sqlite
 database.sqlite
+.Rproj.user
 .RData
 .Rhistory
-.Rproj.user/
-__pycache__/
-figs/*.png
