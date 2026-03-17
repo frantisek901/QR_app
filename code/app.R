@@ -34,14 +34,43 @@ source_python("code/QR_gen.py")
 
 # --- 2. UŽIVATELSKÉ ROZHRANÍ (UI) ---
 ui <- fluidPage(
-  titlePanel("Univerzitní generátor QR kódů pro studující zdarma"),
+  # Hlavička aplikace
+  titlePanel("Opravdu free QR generátor"),
+
+  # --- ZAČÁTEK: Instrukce pro uživatele ---
+  div(
+    class = "well",
+
+    h4("Proč tento nástroj vznikl?"),
+    p(
+      "Setkali jsme se s tím, že studující v dobré víře často používají různé 'free' generátory QR kódů pro své dotazníky. Tyto pochybné služby ale respondenty občas přesměrují nejdříve na agresivní reklamu, nebo po čase přestanou fungovat úplně. Každopádně to nevrhá dobré světlo na dotazníkové průzkumy na univerzitě obecně. Proto jsme vytvořili (za pomoci Gemini 3.0 Pro) tento univerzitní generátor -- je čistý, bezpečný, spolehlivý a bez jakýchkoliv háčků."
+    ),
+
+    h4("Jak generátor používat:"),
+    tags$ul(
+      tags$li(
+        strong("Cílový odkaz:"),
+        " Zkopírujte a vložte plnou URL adresu Vašeho dotazníku (např. z Google Forms, Click4Survey, MS Forms, Survio, Qualtrics)."
+      ),
+      tags$li(
+        strong("E-mail (volitelně):"),
+        " Vygenerovaný QR kód si můžete rovnou stáhnout zde na stránce. Pokud ale právě pracujete na mobilu, můžete si ho nechat poslat do e-mailové schránky a pohodlně ho vložit do textu až později na počítači."
+      )
+    ),
+
+    p(
+      strong("🔒 Ochrana soukromí:"),
+      " Vaše e-mailové adresy nijak neskladujeme ani nesdílíme. V naší databázi se ukládá pouze jejich nevratně zašifrovaný otisk (hash), ze kterého nelze původní e-mail zpětně přečíst. Slouží nám jen pro základní statistiku využití aplikace."
+    )
+  ),
+  # --- KONEC: Instrukce pro uživatele ---
 
   sidebarLayout(
     sidebarPanel(
       # Vstupní pole
       textInput(
         "url",
-        "Odkaz na dotazník (URL):",
+        "Váš odkaz (na dotazník) (URL):",
         placeholder = "https://www.zcu.cz/..."
       ),
       textInput(
