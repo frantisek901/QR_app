@@ -34,7 +34,7 @@ source_python("code/QR_gen.py")
 
 # --- 2. UŽIVATELSKÉ ROZHRANÍ (UI) ---
 ui <- fluidPage(
-  titlePanel("Univerzitní QR Generátor pro Dotazníky"),
+  titlePanel("Univerzitní generátor QR kódů pro studující zdarma"),
 
   sidebarLayout(
     sidebarPanel(
