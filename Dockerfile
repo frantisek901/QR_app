@@ -1,17 +1,17 @@
 #### Dockerfile ####
 
+#### Dockerfile ####
+
 # 1. Základ pro R Shiny aplikaci
 FROM rocker/shiny:4.3.2
 
 # 2. Instalace systémových nástrojů pro Python a R balíčky
-# PŘIDÁNO: libcurl4-openssl-dev, libxml2-dev a zlib1g-dev pro jistotu
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-venv \
     libsqlite3-dev \
     libssl-dev \
-    libsasl2-dev \
     libcurl4-openssl-dev \
     libxml2-dev \
     zlib1g-dev \
@@ -27,7 +27,7 @@ RUN pip install --no-cache-dir qrcode pillow
 
 # 5. Instalace R balíčků (NEPRŮSTŘELNÁ VERZE)
 # Pokud se nějaký balíček nenainstaluje, Rko okamžitě ukončí Docker build s chybou!
-RUN R -e "pkgs <- c('shiny', 'reticulate', 'DBI', 'RSQLite', 'digest', 'emayili'); install.packages(pkgs, repos='https://cloud.r-project.org/'); if (!all(pkgs %in% installed.packages()[,'Package'])) { quit(status=1, save='no') }"
+RUN R -e "pkgs <- c('shiny', 'reticulate', 'DBI', 'RSQLite'); install.packages(pkgs, repos='https://cloud.r-project.org/'); if (!all(pkgs %in% installed.packages()[,'Package'])) { quit(status=1, save='no') }"
 
 # 6. Pracovní složka v kontejneru
 WORKDIR /srv/shiny-server/qr_app
