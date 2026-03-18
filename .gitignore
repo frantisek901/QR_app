@@ -6,3 +6,5 @@ database.sqlite
 .Rproj.user/
 __pycache__/
 figs/*.png
+.env
+.env_zcu

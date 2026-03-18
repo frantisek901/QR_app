@@ -120,6 +120,18 @@ server <- function(input, output, session) {
     # --- KROK 2. Zápis do SQL DATABÁZE ---
     con <- dbConnect(RSQLite::SQLite(), "database.sqlite")
 
+    # Automatické vytvoření tabulky, pokud databáze začíná s čistým štítem
+    dbExecute(
+      con,
+      "CREATE TABLE IF NOT EXISTS qr_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      target_url TEXT NOT NULL,
+      email_hash TEXT
+      )
+      "
+    )
+
     # Hashování e-mailu (pokud ho student zadal)
     email_hash <- NA
     if (trimws(input$email) != "") {

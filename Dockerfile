@@ -4,6 +4,7 @@
 FROM rocker/shiny:4.3.2
 
 # 2. Instalace systémových nástrojů pro Python a R balíčky
+# PŘIDÁNO: libcurl4-openssl-dev, libxml2-dev a zlib1g-dev pro jistotu
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -11,6 +12,9 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     libssl-dev \
     libsasl2-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # 3. Příprava bezpečného virtuálního prostředí pro Python
@@ -21,8 +25,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # 4. Instalace Python balíčků
 RUN pip install --no-cache-dir qrcode pillow
 
-# 5. Instalace R balíčků
-RUN R -e "install.packages(c('shiny', 'reticulate', 'DBI', 'RSQLite', 'digest', 'emayili'), repos='https://cloud.r-project.org/')"
+# 5. Instalace R balíčků (NEPRŮSTŘELNÁ VERZE)
+# Pokud se nějaký balíček nenainstaluje, Rko okamžitě ukončí Docker build s chybou!
+RUN R -e "pkgs <- c('shiny', 'reticulate', 'DBI', 'RSQLite', 'digest', 'emayili'); install.packages(pkgs, repos='https://cloud.r-project.org/'); if (!all(pkgs %in% installed.packages()[,'Package'])) { quit(status=1, save='no') }"
 
 # 6. Pracovní složka v kontejneru
 WORKDIR /srv/shiny-server/qr_app
@@ -30,7 +35,7 @@ WORKDIR /srv/shiny-server/qr_app
 # 7. Zkopírování všeho z rootu (včetně /code a /figs) do kontejneru
 COPY . /srv/shiny-server/qr_app/
 
-# 8. Vytvoření složky figs pro jistotu (kdyby náhodou chyběla)
+# 8. Vytvoření složky figs pro jistotu
 RUN mkdir -p /srv/shiny-server/qr_app/figs
 
 # 9. Nasměrování reticulate na izolovaný Python v kontejneru
