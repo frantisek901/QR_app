@@ -6,6 +6,5 @@ database.sqlite
 .Rproj.user
 .RData
 .Rhistory
-.env
-.env_zcu
-
+.env*
+test.R

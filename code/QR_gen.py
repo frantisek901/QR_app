@@ -3,7 +3,31 @@
 ## Encoding: UTF-8
 ## Upravil:  2026-03-16 FrK
 
-import qrcode
+## Část kódu pro případnou instalaci balíčků qrcode a PIL
+import sys
+import subprocess
+
+# Funkce pro tichou instalaci balíčků
+def install_package(package_name):
+    print(f"🔧 Instaluji chybějící Python balíček: {package_name}...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+
+# Zkusíme načíst qrcode, pokud není, nainstalujeme
+try:
+    import qrcode
+except ImportError:
+    install_package("qrcode")
+    import qrcode
+
+# Zkusíme načíst pillow (modul se jmenuje PIL), pokud není, nainstalujeme
+try:
+    import PIL
+except ImportError:
+    install_package("pillow")
+    import PIL
+
+
+# Nyní už jede samotný skript na QR kód:
 import os
 
 def generate_qr(url: str, output_path: str = "figs/temp_qr.png") -> str:
@@ -40,7 +64,7 @@ def generate_qr(url: str, output_path: str = "figs/temp_qr.png") -> str:
 
 # Malý testík, když tento skript spustíš přímo
 if __name__ == "__main__":
-    test_url = "https://www.kvalita.zcu.cz/cs/Analyses/index.html"
+    test_url = "Tohle je jen testovací QR kód!"
     test_file = "figs/test_qr.png"
     vysledek = generate_qr(test_url, test_file)
     print(f"Hotovo! QR kód pro {test_url} byl uložen do: {vysledek}")

@@ -24,18 +24,10 @@ dbExecute(
   CREATE TABLE IF NOT EXISTS qr_logs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      target_url TEXT NOT NULL,
-      email_hash TEXT
+      target_url TEXT NOT NULL
   )
 "
 )
-
-# 3. Simulace vstupu od uživatele a zahašování
-student_email <- "jan.novak@univerzita.cz"
-# Použijeme algoritmus sha256.
-# Tip: V praxi je dobré email před hashem převést na malá písmena (tolower),
-# aby 'Jan@...' a 'jan@...' měly stejný hash.
-hashed_email <- digest(tolower(student_email), algo = "sha256")
 
 # 4. Vložení testovacího záznamu do databáze
 # Použijeme parametrizovaný dotaz (tzv. bind variables) pomocí dbExecute.
@@ -43,18 +35,18 @@ hashed_email <- digest(tolower(student_email), algo = "sha256")
 dbExecute(
   con,
   "
-  INSERT INTO qr_logs (target_url, email_hash) 
-  VALUES (?, ?)
+  INSERT INTO qr_logs (target_url) 
+  VALUES (?)
 ",
-  params = list('https://moje-univerzita.cz/dotaznik-test', hashed_email)
+  params = list('https://moje-univerzita.cz/dotaznik-test')
 )
 
 # A co když email nezadá? Uložíme tam NA (v SQL se to přeloží jako NULL)
 dbExecute(
   con,
   "
-  INSERT INTO qr_logs (target_url, email_hash) 
-  VALUES (?, ?)
+  INSERT INTO qr_logs (target_url) 
+  VALUES (?)
 ",
   params = list('https://moje-univerzita.cz/dotaznik-jiny', NA)
 )

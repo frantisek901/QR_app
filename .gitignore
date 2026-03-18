@@ -1,10 +1,10 @@
+.RData
 .Renviron
 *.sqlite
 database.sqlite
-.RData
 .Rhistory
 .Rproj.user/
 __pycache__/
 figs/*.png
-.env
-.env_zcu
+.env*
+test.R
