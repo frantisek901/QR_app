@@ -33,7 +33,10 @@ ui <- fluidPage(
     tags$ul(
       tags$li(
         strong("Cílový odkaz:"),
-        " Zkopírujte a vložte plnou URL adresu Vašeho dotazníku (např. z Google Forms, Click4Survey, MS Forms, Survio, Qualtrics).\n\nPozn.: Nemusí jít nutně o odkaz na dotazník, naše služba Vám do QR kódu zakóduje jakýkoli odkaz. Dokonce jakýkoli rozumně dlouhý text (včetně emoji)."
+        " Zkopírujte a vložte plnou URL adresu Vašeho dotazníku (např. z Google Forms, Click4Survey, MS Forms, Survio, Qualtrics). ",
+        br(),
+        strong("Poznámka:"),
+        " Nemusí jít nutně o odkaz na dotazník, naše služba Vám do QR kódu zakóduje jakýkoli odkaz. Dokonce jakýkoli text včetně emoji až do maximální délky 480 znaků."
       )
     ),
   ),
@@ -79,7 +82,7 @@ server <- function(input, output, session) {
     # --- NOVÉ: Bezpečnostní validace délky ---
     if (nchar(input$url) > 480) {
       showNotification(
-        "Jejda! Odkaz je příliš dlouhý (max. 480 znaků). Zkuste ho zkrátit, ať ho QR kód zvládne vygenerovat.",
+        "Jejda! Odkaz/text je příliš dlouhý (více než 480 znaků). Zkuste ho zkrátit, ať aplikace zvládne QR kód vygenerovat.",
         type = "error",
         duration = 6
       )
@@ -89,7 +92,7 @@ server <- function(input, output, session) {
 
     # --- KROK 1. Vygenerování QR kódu přes PYTHON ---
     # Vytvoříme si dočasný soubor (temporary file), kam Python uloží obrázek
-    temp_file <- "figs/temp.png" #tempfile(fileext = ".png")
+    temp_file <- tempfile(fileext = ".png")
 
     # TADY JE TA MAGIE: Voláme Python funkci z R! Obrázek se fyzicky uloží.
     generate_qr(input$url, temp_file)
